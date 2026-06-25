@@ -1,0 +1,6 @@
+{
+  "name": "Mixgraph Solo",
+  "description": "Darmowa aplikacja do inteligentnej analizy kompatybilności utworów, budowania setów DJ-skich, rekomendacji przejść, wizualnego Flow Buildera oraz asystenta AI.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
