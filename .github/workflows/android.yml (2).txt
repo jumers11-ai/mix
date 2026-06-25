@@ -1,0 +1,47 @@
+name: Android CI
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  pull_request:
+    branches: [ "main", "master" ]
+  workflow_dispatch: # Pozwala na ręczne uruchomienie kompilacji z interfejsu GitHub
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+
+    - name: Set up JDK 21
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'temurin'
+        java-version: '21'
+
+    - name: Setup Gradle
+      uses: gradle/actions/setup-gradle@v4
+      with:
+        gradle-version: '9.3.1'
+        cache-disabled: true
+        validate-wrappers: false
+
+    - name: Setup Android SDK and Accept Licenses
+      uses: android-actions/setup-android@v4
+
+    - name: Regenerate Gradle Wrapper
+      run: gradle wrapper
+
+    - name: Grant execute permission for gradlew
+      run: chmod +x gradlew
+
+    - name: Build Debug APK (Clean, Fresh Download & No Cache)
+      run: ./gradlew build --refresh-dependencies 
+      
+    - name: Upload Debug APK
+      uses: actions/upload-artifact@v4
+      with:
+        name: dj-ai-automixer-apk
+        path: app/build/outputs/apk/debug/app-debug.apk
